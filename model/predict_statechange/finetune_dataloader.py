@@ -271,14 +271,17 @@ def evaluate_statechange(estimator, config):
 
     results['all'] = pd.DataFrame(results_agg)
     # Upload
-    gclient = storage.Client()
-    storage_dir = TemporaryDirectory()
-    bucket_name, file_prefix = config.device['output_dir'].split('gs://', 1)[1].split('/', 1)
-    bucket = gclient.get_bucket(bucket_name)
+    # gclient = storage.Client()
+    # storage_dir = TemporaryDirectory()
+    # bucket_name, file_prefix = config.device['output_dir'].split('gs://', 1)[1].split('/', 1)
+    # bucket = gclient.get_bucket(bucket_name)
+
+    storage_dir = config.device['output_dir']
 
     # Save locally
+    file_prefix = config.device['output_dir'].split('/')[-1]
     results['all'].to_csv(file_prefix.replace('/', '_') + '_all.csv')
     for k, df in results.items():
-        df.to_csv(os.path.join(storage_dir.name, k + '.csv'))
-        blob = bucket.blob(os.path.join(file_prefix, k + '.csv'))
-        blob.upload_from_filename(os.path.join(storage_dir.name, k + '.csv'))
+        df.to_csv(os.path.join(storage_dir, k + '.csv'))
+        # blob = bucket.blob(os.path.join(file_prefix, k + '.csv'))
+        # blob.upload_from_filename(os.path.join(storage_dir, k + '.csv'))

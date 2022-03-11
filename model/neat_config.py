@@ -177,10 +177,10 @@ def get_tpu_run_config(device_config):
     tpu_cluster_resolver = None
     tpu_name = device_config.get('tpu_name', os.uname()[1])  # This is the hostname
 
-    if device_config['use_tpu']:
-        tpu_cluster_resolver = tf.contrib.cluster_resolver.TPUClusterResolver(
-            tpu_name, zone=device_config.get('tpu_zone', None), project=device_config.get('gcp_project', None))
-        tf.compat.v1.Session.reset(tpu_cluster_resolver.get_master())
+    # if device_config['use_tpu']:
+    #     tpu_cluster_resolver = tf.contrib.cluster_resolver.TPUClusterResolver(
+    #         tpu_name, zone=device_config.get('tpu_zone', None), project=device_config.get('gcp_project', None))
+    #     tf.compat.v1.Session.reset(tpu_cluster_resolver.get_master())
 
     run_config = tf.contrib.tpu.RunConfig(
         cluster=tpu_cluster_resolver,

@@ -20,7 +20,7 @@ from model.model_utils import get_shape_list, switch_block
 import pandas as pd
 from data.zeroshot_lm_setup.encoder import get_encoder, Encoder
 from tfrecord.tfrecord_utils import S3TFRecordWriter, int64_list_feature, int64_feature
-from data.concept_utils import get_concepts_from_bpe_encoded_text, concept_df, mapping_dict, get_glove_embeds
+# from data.concept_utils import get_concepts_from_bpe_encoded_text, concept_df, mapping_dict, get_glove_embeds
 from model.predict_statechange.finetune_dataloader import get_statechange_dataset, create_tfrecord_statechange, \
     evaluate_statechange
 from model.interact.dataloader import input_fn_builder
@@ -28,13 +28,20 @@ from model.interact.modeling import StateChangePredictModel
 from data.thor_constants import numpy_to_instance_states
 from model.transformer import residual_mlp
 
-config = NeatConfig.from_args("Finetune script",
-                              default_config_file='configs/local_debug.yaml',
+# config = NeatConfig.from_args("Finetune script",
+#                               default_config_file='configs/local_debug.yaml',
+#                               extra_args=[{
+#                                   'name': '--do_train',
+#                                   'dest': 'do_train',
+#                                   'action': 'store_true', 'default': False,
+#                               }])
+config = NeatConfig.from_args("Inference script",
+                              default_config_file='flagship_configs/inference.yaml',
                               extra_args=[{
                                   'name': '--do_train',
                                   'dest': 'do_train',
                                   'action': 'store_true', 'default': False,
-                              }])
+                              }])                              
 
 
 def finetune_model_fn_builder_statechange(config: NeatConfig):
@@ -322,7 +329,7 @@ if os.uname()[1] == 'shoob':
     ipdb.set_trace()
 
 estimator = tf.contrib.tpu.TPUEstimator(
-    use_tpu=config.device['use_tpu'],
+    use_tpu=False,
     model_fn=model_fn,
     config=config.device['tpu_run_config'],
     train_batch_size=config.device['train_batch_size'],

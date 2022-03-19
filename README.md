@@ -55,3 +55,29 @@ pip install "tensorflow==1.15.5"
 pip install --upgrade google-api-python-client oauth2client
 pip install -r requirements.txt
 ```
+
+## Setting up on GreatLakes
+```
+curl -o ~/miniconda.sh -O  https://repo.anaconda.com/miniconda/Miniconda3-py39_4.11.0-Linux-x86_64.sh  && \
+     chmod +x ~/miniconda.sh && \
+     ~/miniconda.sh -b -p ~/conda && \
+     rm ~/miniconda.sh
+
+cd piglet
+conda create -n piglet_env
+# you need to do this every time before conda activate
+source ~/conda/etc/profile.d/conda.sh
+# create conda activate
+conda activate piglet_env
+
+conda install -y python=3.7 tqdm numpy pyyaml scipy ipython mkl mkl-include cython typing h5py pandas && conda clean -ya
+
+pip install tensorflow-gpu==1.15.5
+pip install --upgrade google-api-python-client oauth2client
+pip install -r requirements.txt
+
+# install cudatoolkit, cudnn, numpy
+conda install cudatoolkit=10.0
+conda install numpy=1.17.3
+
+```
